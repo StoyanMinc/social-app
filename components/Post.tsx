@@ -107,6 +107,12 @@ export default function Post({ post }: PostProps) {
                         <Text style={styles.captionText}>{post.caption}</Text>
                     </View>
                 )}
+                {commentsCount > 0 && (
+                    <TouchableOpacity onPress={() => setShowComments(true)}>
+                        <Text style={styles.commentsText}>View All {commentsCount} comments</Text>
+                    </TouchableOpacity>
+                )}
+
                 <TouchableOpacity>
                     <Text style={styles.commentText}>{likesCount > 0 ? `${likesCount} likes` : 'Be the first to like'}</Text>
                 </TouchableOpacity>

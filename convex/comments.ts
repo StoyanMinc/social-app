@@ -5,8 +5,7 @@ import { getAuthenticatedUser } from "./users";
 export const addComment = mutation({
     args: {
         postId: v.id("posts"),
-        content: v.string(),
-        userId: v.id("users"),
+        content: v.string()
     },
     handler: async (ctx, args) => {
         const currentUser = await getAuthenticatedUser(ctx);
@@ -16,8 +15,8 @@ export const addComment = mutation({
 
         const commentId = await ctx.db.insert('comments', {
             postId: args.postId,
-            userId: args.userId,
-            content: args.content,
+            userId: currentUser._id,
+            content: args.content
         })
         await ctx.db.patch(args.postId, {
             comments: post.comments + 1
