@@ -2,13 +2,14 @@ import { COLORS } from '@/constants';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
 import { Ionicons } from '@expo/vector-icons';
-import { useMutation } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/feed.styles';
 import CommentsModal from './CommentsModal';
+import { formatDistanceToNow } from 'date-fns';
 
 type PostProps = {
     post: {
@@ -31,11 +32,15 @@ type PostProps = {
 
 export default function Post({ post }: PostProps) {
     const [isLiked, setIsLiked] = useState(post.isLiked);
+    const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
     const [likesCount, setLikesCount] = useState(post.likes);
     const [commentsCount, setCommentsCount] = useState(post.comments);
     const [showComents, setShowComments] = useState(false);
 
+
     const toggleLike = useMutation(api.posts.toggleLike)
+    const tggleBookmark = useMutation(api.bookmarks.toggleBookmark);
+
     const handleLike = async () => {
 
         try {
@@ -45,6 +50,10 @@ export default function Post({ post }: PostProps) {
         } catch (error) {
             console.log('Error toggle like:', error);
         }
+    }
+    const handleBookmark = async () => {
+        const result = await tggleBookmark({ postId: post._id });
+        setIsBookmarked(result);
     }
 
     console.log(post);
@@ -65,9 +74,16 @@ export default function Post({ post }: PostProps) {
                     </TouchableOpacity>
                 </Link>
                 {/* TODO fix it later */}
-                <TouchableOpacity>
-                    <Ionicons name='ellipsis-horizontal' size={20} color={COLORS.white} />
-                </TouchableOpacity>
+                {post.postAuthor._id === 'userId' ? (
+                    <TouchableOpacity>
+                        <Ionicons name='trash' size={20} color={COLORS.primary} />
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity>
+                        <Ionicons name='trash' size={20} color={COLORS.primary} />
+                    </TouchableOpacity>
+                )}
+
             </View>
             {/* POST IMAGE */}
             <Image
@@ -93,8 +109,12 @@ export default function Post({ post }: PostProps) {
                     </TouchableOpacity>
 
                 </View>
-                <TouchableOpacity>
-                    <Ionicons name='bookmark-outline' size={22} color={COLORS.white} />
+                <TouchableOpacity onPress={handleBookmark}>
+                    <Ionicons
+                        name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
+                        size={22}
+                        color={COLORS.white}
+                    />
                 </TouchableOpacity>
             </View>
 
@@ -116,7 +136,9 @@ export default function Post({ post }: PostProps) {
                 <TouchableOpacity>
                     <Text style={styles.commentText}>{likesCount > 0 ? `${likesCount} likes` : 'Be the first to like'}</Text>
                 </TouchableOpacity>
-                <Text style={styles.timeAgo}>2 hours ago</Text>
+                <Text style={styles.timeAgo}>
+                    {formatDistanceToNow(post._creationTime, { addSuffix: true })}
+                </Text>
             </View>
             <CommentsModal
                 postId={post._id}
