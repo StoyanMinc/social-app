@@ -41,7 +41,7 @@ export const createPost = mutation({
 export const getFeedPosts = query({
     handler: async (ctx) => {
         const currentUser = await getAuthenticatedUser(ctx);
-
+        if (!currentUser) throw new Error('Unauthorized!');
         // get all posts
         const posts = await ctx.db.query('posts').order('desc').collect();
         if (posts.length === 0) return [];
@@ -57,7 +57,6 @@ export const getFeedPosts = query({
                     .query('bookmarks')
                     .withIndex('by_user_and_post', (q) => q.eq('userId', currentUser._id).eq('postId', post._id))
                     .first();
-
                 return {
                     ...post,
                     postAuthor: {
@@ -108,3 +107,39 @@ export const toggleLike = mutation({
         }
     }
 });
+
+export const deletePost = mutation({
+    args: { postId: v.id('posts') },
+    handler: async (ctx, args) => {
+        const currentUser = await getAuthenticatedUser(ctx);
+        if (!currentUser) throw new Error('Unauthorized!');
+
+        const post = await ctx.db.get(args.postId);
+        if (!post) throw new Error('Post not found!');
+
+        if (post.userId !== currentUser._id) throw new Error('Unauthorized!');
+
+        //delete post likes
+        const likes = await ctx.db.query('likes')
+            .withIndex('by_post', (q) => q.eq('postId', post._id))
+            .collect();
+        for (const like of likes) {
+            await ctx.db.delete(like._id);
+        }
+        //delete post bookmarks
+        const comments = await ctx.db.query('comments')
+            .withIndex('by_post', (q) => q.eq('postId', post._id))
+            .collect();
+        for (const comment of comments) {
+            await ctx.db.delete(comment._id);
+        }
+        //delete files
+        await ctx.storage.delete(post.storageId);
+        //delete post
+        await ctx.db.delete(post._id);
+        //decrement user posts count
+        await ctx.db.patch(currentUser._id, {
+            posts: Math.max(0, (currentUser.posts || 1) - 1)
+        });
+    }
+})

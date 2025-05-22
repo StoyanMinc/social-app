@@ -59,6 +59,8 @@ export default function CreateScreen() {
             const { storageId } = JSON.parse(uploadResult.body);
             const result = await createPost({ storageId, caption });
             console.log('UPLOAD POST SUCCESSFULLY:', result);
+            setSelectedImage(null);
+            setCaption('');
             router.push('/(tabs)');
         } catch (error) {
             console.log("ERROR SHARING POST:", error);
@@ -91,7 +93,7 @@ export default function CreateScreen() {
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.container}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
         >
             <View style={styles.contentContainer}>
 

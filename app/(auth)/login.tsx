@@ -26,9 +26,9 @@ export default function Login() {
     return (
         <View style={styles.container}>
             <View style={styles.brandSection}>
-                <Ionicons name='leaf' size={32} color={COLORS.primary} />
+                {/* <Ionicons name='leaf' size={32} color={COLORS.primary} /> */}
             </View>
-            <Text style={styles.appName}>spotlight</Text>
+            <Text style={styles.appName}>Stoyan's SM</Text>
             <Text style={styles.tagline}>don't miss anything</Text>
             <View style={styles.illustrationContainer}>
                 <Image

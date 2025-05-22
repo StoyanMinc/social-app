@@ -10,6 +10,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/feed.styles';
 import CommentsModal from './CommentsModal';
 import { formatDistanceToNow } from 'date-fns';
+import { useUser } from '@clerk/clerk-expo';
 
 type PostProps = {
     post: {
@@ -37,9 +38,12 @@ export default function Post({ post }: PostProps) {
     const [commentsCount, setCommentsCount] = useState(post.comments);
     const [showComents, setShowComments] = useState(false);
 
+    const { user } = useUser();
 
+    const currentUser = useQuery(api.users.getUserByClekrId, user ? { clerkId: user.id } : 'skip');
     const toggleLike = useMutation(api.posts.toggleLike)
-    const tggleBookmark = useMutation(api.bookmarks.toggleBookmark);
+    const toggleBookmark = useMutation(api.bookmarks.toggleBookmark);
+    const deletePost = useMutation(api.posts.deletePost);
 
     const handleLike = async () => {
 
@@ -52,8 +56,16 @@ export default function Post({ post }: PostProps) {
         }
     }
     const handleBookmark = async () => {
-        const result = await tggleBookmark({ postId: post._id });
+        const result = await toggleBookmark({ postId: post._id });
         setIsBookmarked(result);
+    }
+
+    const deletePostHandler = async () => {
+        try {
+            await deletePost({ postId: post._id });
+        } catch (error) {
+            console.log('Error deleting post:', error);
+        }
     }
 
     console.log(post);
@@ -74,13 +86,13 @@ export default function Post({ post }: PostProps) {
                     </TouchableOpacity>
                 </Link>
                 {/* TODO fix it later */}
-                {post.postAuthor._id === 'userId' ? (
-                    <TouchableOpacity>
+                {post.postAuthor._id === currentUser?._id ? (
+                    <TouchableOpacity onPress={deletePostHandler}>
                         <Ionicons name='trash' size={20} color={COLORS.primary} />
                     </TouchableOpacity>
                 ) : (
                     <TouchableOpacity>
-                        <Ionicons name='trash' size={20} color={COLORS.primary} />
+                        <Ionicons name='ellipsis-horizontal' size={20} color={COLORS.primary} />
                     </TouchableOpacity>
                 )}
 

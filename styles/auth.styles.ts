@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLORS.white,
-        paddingVertical: 16,
+        paddingVertical: 24,
         paddingHorizontal: 24,
         borderRadius: 14,
         marginBottom: 20,
@@ -85,7 +85,8 @@ export const styles = StyleSheet.create({
     googleButtonText: {
         fontSize: 16,
         fontWeight: '600',
-        color: '#000'
+        color: 'black',
+        height: 20
     },
     termsText: {
         textAlign: 'center',

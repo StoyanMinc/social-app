@@ -34,8 +34,8 @@ export default function Index() {
                 renderItem={({ item }) => <Post post={item} />}
                 keyExtractor={(item) => item._id}
                 showsVerticalScrollIndicator={false}
-                // * if we need space under the posts where scrolling
-                // contentContainerStyle={{ paddingBottom: 60 }}
+                
+                contentContainerStyle={{ paddingBottom: 60 }} //* if we need space under the posts where scrolling
                 ListHeaderComponent={
                     <ScrollView
                         horizontal
