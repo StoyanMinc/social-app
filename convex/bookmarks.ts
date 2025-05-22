@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { getAuthenticatedUser } from "./users";
 
 export const toggleBookmark = mutation({
@@ -9,12 +9,13 @@ export const toggleBookmark = mutation({
     handler: async (ctx, args) => {
         const currentUser = await getAuthenticatedUser(ctx);
         if (!currentUser) throw new Error("User not found!");
+
         const post = await ctx.db.get(args.postId);
         if (!post) throw new Error("Post not found!");
 
         const isBookmarked = await ctx.db.query('bookmarks')
-            .withIndex('by_user', (q) => q.eq('userId', currentUser._id))
-            .first();
+            .withIndex('by_user_and_post', (q) => q.eq('userId', currentUser._id).eq('postId', args.postId))
+            .first()
 
         if (isBookmarked) {
             await ctx.db.delete(isBookmarked._id);
@@ -29,7 +30,7 @@ export const toggleBookmark = mutation({
     }
 })
 
-export const getBookmarks = mutation({
+export const getBookmarkedPosts = query({
     handler: async (ctx) => {
         const currentUser = await getAuthenticatedUser(ctx);
         if (!currentUser) throw new Error("User not found!");
