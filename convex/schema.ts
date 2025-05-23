@@ -1,7 +1,7 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 export default defineSchema({
-    users:defineTable({
+    users: defineTable({
         username: v.string(),
         fullName: v.string(),
         email: v.string(),
@@ -22,7 +22,7 @@ export default defineSchema({
         comments: v.number(),
     }).index('by_user', ['userId']),
 
-    comments:defineTable({
+    comments: defineTable({
         userId: v.id('users'),
         postId: v.id('posts'),
         content: v.string()
@@ -32,30 +32,32 @@ export default defineSchema({
         userId: v.id('users'),
         postId: v.id('posts'),
     })
-    .index('by_post', ['postId'])
-    .index('by_user_and_post', ['userId', 'postId']),
+        .index('by_post', ['postId'])
+        .index('by_user_and_post', ['userId', 'postId']),
 
-    follows:defineTable({
+    follows: defineTable({
         followerId: v.id('users'),
         followingId: v.id('users')
     })
-    .index('by_follower', ['followerId'])
-    .index('by_following', ['followingId'])
-    .index('by_follower_and_following', ['followerId', 'followingId']),
+        .index('by_follower', ['followerId'])
+        .index('by_following', ['followingId'])
+        .index('by_follower_and_following', ['followerId', 'followingId']),
 
-    notifications:defineTable({
+    notifications: defineTable({
         senderId: v.id('users'),
         receiverId: v.id('users'),
         type: v.union(v.literal('like'), v.literal('comment'), v.literal('following')),
-        commendId: v.optional(v.id('comments')),
+        commentId: v.optional(v.id('comments')),
         postId: v.optional(v.id('posts'))
-    }).index('by_receiver', ['receiverId']),
+    })
+        .index('by_receiver', ['receiverId'])
+        .index('by_post', ['postId']),
 
-    bookmarks:defineTable({
+    bookmarks: defineTable({
         userId: v.id('users'),
         postId: v.id('posts')
     })
-    .index('by_user', ['userId'])
-    .index('by_post', ['postId'])
-    .index('by_user_and_post', ['userId', 'postId'])
+        .index('by_user', ['userId'])
+        .index('by_post', ['postId'])
+        .index('by_user_and_post', ['userId', 'postId'])
 })
