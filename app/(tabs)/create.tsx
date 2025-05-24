@@ -24,9 +24,9 @@ export default function CreateScreen() {
     const { user } = useUser();
     const router = useRouter();
 
-    const [caption, setCaption] = useState('');
+    const [caption, setCaption] = useState<string>('');
     const [selectedImage, setSelectedImage] = useState<string | null>()
-    const [isSharing, setIsSharing] = useState(false);
+    const [isSharing, setIsSharing] = useState<boolean>(false);
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -38,7 +38,6 @@ export default function CreateScreen() {
 
         if (!result.canceled) { setSelectedImage(result.assets[0].uri) }
     }
-    console.log(selectedImage);
 
     const generateUploadUrl = useMutation(api.posts.generateUploadUrl);
     const createPost = useMutation(api.posts.createPost);

@@ -149,4 +149,18 @@ export const deletePost = mutation({
             posts: Math.max(0, (currentUser.posts || 1) - 1)
         });
     }
-})
+});
+
+export const postsByUser = query({
+    args: { userId: v.optional(v.id('users')) },
+    handler: async (ctx, args) => {
+        const user = args.userId ? await ctx.db.get(args.userId) : await getAuthenticatedUser(ctx);
+        if (!user) throw new Error("User not found!");
+
+        const posts = await ctx.db.query('posts')
+            .withIndex('by_user', (q) => q.eq('userId', args.userId || user._id))
+            .collect();
+
+        return posts
+    }
+});

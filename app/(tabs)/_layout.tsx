@@ -1,8 +1,20 @@
 import { COLORS } from '@/constants';
+import { api } from '@/convex/_generated/api';
 import { Ionicons } from '@expo/vector-icons';
+import { useQuery } from 'convex/react';
 import { Tabs } from 'expo-router';
+import { useEffect, useState } from 'react';
 
 export default function TabLayout() {
+
+    const notifications = useQuery(api.notifications.getNotifications);
+    const [newNototification, setNewNotification] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (notifications && notifications.length > 0) {
+            setNewNotification(true);
+        }
+    }, [notifications])
     return (
         <Tabs
             screenOptions={{
@@ -31,9 +43,9 @@ export default function TabLayout() {
                 name='create'
                 options={{ tabBarIcon: ({ size }) => <Ionicons name='add-circle' size={size} color={COLORS.primary} /> }}
             />
-               <Tabs.Screen
+            <Tabs.Screen
                 name='notifications'
-                options={{ tabBarIcon: ({ size, color }) => <Ionicons name='notifications' size={size} color={color} /> }}
+                options={{ tabBarIcon: ({ size, color }) => <Ionicons name='notifications' size={size} color={newNototification ? COLORS.primary : color} /> }}
             />
             <Tabs.Screen
                 name='profile'

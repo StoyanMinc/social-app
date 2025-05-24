@@ -13,7 +13,6 @@ export default function Index() {
     const { signOut } = useAuth();
 
     const posts = useQuery(api.posts.getFeedPosts);
-    console.log(posts);
 
     if (posts === undefined) return <Loader />
 
