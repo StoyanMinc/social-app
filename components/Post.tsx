@@ -32,11 +32,11 @@ type PostProps = {
 }
 
 export default function Post({ post }: PostProps) {
-    const [isLiked, setIsLiked] = useState(post.isLiked);
-    const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
-    const [likesCount, setLikesCount] = useState(post.likes);
-    const [commentsCount, setCommentsCount] = useState(post.comments);
-    const [showComents, setShowComments] = useState(false);
+    const [isLiked, setIsLiked] = useState<boolean>(post.isLiked);
+    const [isBookmarked, setIsBookmarked] = useState<boolean>(post.isBookmarked);
+    const [likesCount, setLikesCount] = useState<number>(post.likes);
+    const [commentsCount, setCommentsCount] = useState<number>(post.comments);
+    const [showComents, setShowComments] = useState<boolean>(false);
 
     const { user } = useUser();
 
@@ -68,7 +68,6 @@ export default function Post({ post }: PostProps) {
         }
     }
 
-    console.log(post);
     return (
         <View style={styles.post}>
             {/* HEADER */}

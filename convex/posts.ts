@@ -133,6 +133,13 @@ export const deletePost = mutation({
         for (const comment of comments) {
             await ctx.db.delete(comment._id);
         }
+        //delete notifications
+        const notifications = await ctx.db.query('notifications')
+            .withIndex('by_post', (q) => q.eq('postId', post._id))
+            .collect();
+        for (const notification of notifications) {
+            await ctx.db.delete(notification._id);
+        }
         //delete files
         await ctx.storage.delete(post.storageId);
         //delete post

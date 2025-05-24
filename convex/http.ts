@@ -24,7 +24,6 @@ http.route({
         const svix_timestamp = req.headers.get('svix-timestamp');
 
         if (!svix_id || !svix_signature || !svix_timestamp) {
-            console.log(svix_id, svix_signature, svix_timestamp);
             return new Response('Mising svix headers', {
                 status: 400
             });

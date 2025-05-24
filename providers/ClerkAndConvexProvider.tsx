@@ -7,7 +7,6 @@ const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
     unsavedChangesWarning: false
 });
 const publishabKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
-console.log(publishabKey);
 if (!publishabKey) {
     throw new Error("Missing publishable key!");
 }
