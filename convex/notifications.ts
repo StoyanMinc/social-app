@@ -22,17 +22,20 @@ export const getNotifications = query({
                 }
                 if (notification.type === "comment" && notification.commentId) {
                     comment = await ctx.db.get(notification.commentId);
+                    if(notification.postId)
+                    post = await ctx.db.get(notification.postId);
+
                 }
 
                 return {
                     ...notification,
                     sender: {
                         _id: sender._id,
-                        fulname: sender.fullName,
+                        fullname: sender.fullName,
                         image: sender.image,
                     },
                     post,
-                    comment: comment?._id
+                    comment: comment?.content
                 }
             })
         )

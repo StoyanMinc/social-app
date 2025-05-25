@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants";
 import { Dimensions, StyleSheet } from "react-native";
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -206,7 +206,7 @@ export const styles = StyleSheet.create({
 
     postDetailContainer: {
         backgroundColor: COLORS.background,
-        maxHeight: height * 0.9, 
+        maxHeight: height * 0.9,
     },
 
     postDetailHeader: {
@@ -228,7 +228,8 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 24,
         paddingVertical: 8,
         borderRadius: 8,
-        marginTop: 16
+        marginTop: 16,
+        marginBottom: 10
     },
 
     followingButton: {
