@@ -29,7 +29,6 @@ export default function Profile() {
         await updateUser(updateUserData);
         setEditModalVisible(false);
     }
-    console.log('USERPOSTS', userPosts);
     if (!currentUser || userPosts === undefined) return <Loader />
     return (
         <View style={styles.container}>
@@ -142,9 +141,9 @@ export default function Profile() {
                                 />
                             </View>
                             <TouchableOpacity
-                             style={styles.saveButton}
-                             onPress={updateUserHandler}
-                             >
+                                style={styles.saveButton}
+                                onPress={updateUserHandler}
+                            >
                                 <Text style={styles.saveButtonText}>Save Changes</Text>
                             </TouchableOpacity>
                         </View>

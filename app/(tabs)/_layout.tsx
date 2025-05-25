@@ -6,15 +6,6 @@ import { Tabs } from 'expo-router';
 import { useEffect, useState } from 'react';
 
 export default function TabLayout() {
-
-    const notifications = useQuery(api.notifications.getNotifications);
-    const [newNototification, setNewNotification] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (notifications && notifications.length > 0) {
-            setNewNotification(true);
-        }
-    }, [notifications])
     return (
         <Tabs
             screenOptions={{
@@ -45,7 +36,7 @@ export default function TabLayout() {
             />
             <Tabs.Screen
                 name='notifications'
-                options={{ tabBarIcon: ({ size, color }) => <Ionicons name='notifications' size={size} color={newNototification ? COLORS.primary : color} /> }}
+                options={{ tabBarIcon: ({ size, color }) => <Ionicons name='notifications' size={size} color={color} />}}
             />
             <Tabs.Screen
                 name='profile'

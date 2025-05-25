@@ -103,8 +103,6 @@ export const toggleFollow = mutation({
     args: { followingId: v.id('users') },
     handler: async (ctx, args) => {
         const currentUser = await getAuthenticatedUser(ctx);
-        // if(currentUser) throw new Error("User not found");
-
         const isExisting = await ctx.db.query('follows')
             .withIndex('by_follower_and_following', (q) => {
                 return q.eq('followerId', currentUser._id).eq('followingId', args.followingId)

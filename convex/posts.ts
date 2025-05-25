@@ -126,7 +126,7 @@ export const deletePost = mutation({
         for (const like of likes) {
             await ctx.db.delete(like._id);
         }
-        //delete post bookmarks
+        //delete post comments
         const comments = await ctx.db.query('comments')
             .withIndex('by_post', (q) => q.eq('postId', post._id))
             .collect();
@@ -139,6 +139,13 @@ export const deletePost = mutation({
             .collect();
         for (const notification of notifications) {
             await ctx.db.delete(notification._id);
+        }
+        //delete bookmarks
+        const bookmarks = await ctx.db.query('bookmarks')
+            .withIndex('by_post', (q) => q.eq('postId', post._id))
+            .collect();
+        for (const bookmark of bookmarks) {
+            await ctx.db.delete(bookmark._id)
         }
         //delete files
         await ctx.storage.delete(post.storageId);

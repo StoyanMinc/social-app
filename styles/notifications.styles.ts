@@ -21,7 +21,8 @@ export const styles = StyleSheet.create({
     },
 
     listContainer: {
-        padding: 16
+        padding: 16,
+        gap: 16
     },
 
     notificationItem: {

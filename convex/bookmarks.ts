@@ -46,7 +46,6 @@ export const getBookmarkedPosts = query({
                 return post
             })
         )
-
         return bookmarksWithInfo;
     }
 })

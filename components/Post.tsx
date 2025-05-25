@@ -67,33 +67,34 @@ export default function Post({ post }: PostProps) {
             console.log('Error deleting post:', error);
         }
     }
-
     return (
         <View style={styles.post}>
             {/* HEADER */}
             <View style={styles.postHeader}>
-                <Link href={'/(tabs)/notifications'}>
-                    <TouchableOpacity style={styles.postHeaderLeft}>
-                        <Image
-                            source={post.postAuthor.image}
-                            style={styles.postAvatar}
-                            contentFit='cover'
-                            transition={200}
-                            cachePolicy={'memory-disk'}
-                        />
-                        <Text style={styles.postUsername}>{post.postAuthor.username}</Text>
-                    </TouchableOpacity>
-                </Link>
-                {/* TODO fix it later */}
-                {post.postAuthor._id === currentUser?._id ? (
-                    <TouchableOpacity onPress={deletePostHandler}>
-                        <Ionicons name='trash' size={20} color={COLORS.primary} />
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity>
-                        <Ionicons name='ellipsis-horizontal' size={20} color={COLORS.primary} />
-                    </TouchableOpacity>
-                )}
+                <Link href={
+                    post.postAuthor._id === currentUser?._id ? '/(tabs)/profile' : `/users/${post.postAuthor._id }`
+                } asChild>
+                        <TouchableOpacity style={styles.postHeaderLeft}>
+                            <Image
+                                source={post.postAuthor.image}
+                                style={styles.postAvatar}
+                                contentFit='cover'
+                                transition={200}
+                                cachePolicy={'memory-disk'}
+                            />
+                            <Text style={styles.postUsername}>{post.postAuthor.username}</Text>
+                        </TouchableOpacity>
+                    </Link>
+                    {/* TODO fix it later */}
+                    {post.postAuthor._id === currentUser?._id ? (
+                        <TouchableOpacity onPress={deletePostHandler}>
+                            <Ionicons name='trash' size={20} color={COLORS.primary} />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity>
+                            <Ionicons name='ellipsis-horizontal' size={20} color={COLORS.primary} />
+                        </TouchableOpacity>
+                    )}
 
             </View>
             {/* POST IMAGE */}
@@ -157,6 +158,6 @@ export default function Post({ post }: PostProps) {
                 onClose={() => setShowComments(false)}
                 onCommentAdded={() => setCommentsCount((prev) => prev + 1)}
             />
-        </View>
+        </View >
     );
 }

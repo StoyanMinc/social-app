@@ -1,5 +1,5 @@
-import { Id } from "@/convex/_generated/dataModel";
-import { MutationCtx } from "@/convex/_generated/server";
+import {Id} from '../convex/_generated/dataModel'
+import { MutationCtx } from "../convex/_generated/server";
 
 export default async function updateFollowCounts(
     ctx: MutationCtx,
@@ -15,7 +15,7 @@ export default async function updateFollowCounts(
             following: isFollow ? followerUser.following + 1 : followerUser.following - 1
         });
         await ctx.db.patch(followingId, {
-            followers: isFollow ? followingUser.followers + 1 : followingUser.following - 1
+            followers: isFollow ? followingUser.followers + 1 : followingUser.followers - 1
         })
     }
 }

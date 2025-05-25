@@ -12,7 +12,7 @@ export default function Notification({ notification }: any) {
         <View style={styles.notificationItem}>
             <View style={styles.notificationContent}>
                 {/* Fix later */}
-                <Link href={`/notifications`} asChild>
+                <Link href={`/users/${notification.sender._id}`} asChild>
                     <TouchableOpacity style={styles.avatarCointainer} >
                         <Image
                             source={notification.sender.image}
@@ -34,9 +34,9 @@ export default function Notification({ notification }: any) {
                 </Link>
 
                 <View style={styles.notificationInfo}>
-                    <Link href={'/notifications'}>
+                    <Link href={`/users/${notification.sender._id}`} asChild>
                         <TouchableOpacity>
-                            <Text style={styles.username}>{notification.sender.userame}</Text>
+                            <Text style={styles.username}>{notification.sender.fullname}</Text>
                         </TouchableOpacity>
                     </Link>
                     <Text style={styles.action}>
@@ -44,7 +44,7 @@ export default function Notification({ notification }: any) {
                             ? 'liked your post'
                             : notification.type === 'folow'
                                 ? 'followed you'
-                                : `commened' "${notification.comment}"`
+                                : `commened "${notification.comment}"`
                         }
                     </Text>
                     <Text style={styles.timeAgo}>{formatDistanceToNow(notification._creationTime, { addSuffix: true })}</Text>
