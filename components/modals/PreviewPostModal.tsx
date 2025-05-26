@@ -3,21 +3,20 @@ import { styles } from '@/styles/profile.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { View, Modal, TouchableOpacity } from 'react-native';
-
 type Post = {
-  _id: string;
-  _creationTime: number;
-  caption?: string;
-  comments: number;
-  imageUrl: string;
-  likes: number;
-  storageId: string;
-  userId: string;
+    _id: string;
+    _creationTime: number;
+    caption?: string;
+    comments: number;
+    imageUrl: string;
+    likes: number;
+    storageId: string;
+    userId: string;
 };
 
 type PostModalProps = {
-  post: Post;
-  closemodal: () => void;
+    post: Post;
+    closemodal: () => void;
 };
 
 export default function PostModal({ post, closemodal }: PostModalProps) {
