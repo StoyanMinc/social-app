@@ -3,8 +3,10 @@ import { COLORS } from "@/constants";
 import ClerkAndConvexProvider from "@/providers/ClerkAndConvexProvider";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import * as NavigationBar from 'expo-navigation-bar';
+import { Platform } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -15,10 +17,18 @@ export default function RootLayout() {
     });
 
     const onLayoutRootView = useCallback(async () => {
-        if(fontsLoaded) {
+        if (fontsLoaded) {
             await SplashScreen.hideAsync();
         }
-    },[fontsLoaded]);
+    }, [fontsLoaded]);
+
+    useEffect(() => {
+        if (Platform.OS === 'android') {
+            NavigationBar.setBackgroundColorAsync("#000000");
+            NavigationBar.setButtonStyleAsync('light');
+
+        }
+    }, [])
 
     return (
         <ClerkAndConvexProvider>

@@ -8,15 +8,13 @@ import { FlatList, KeyboardAvoidingView, Modal, Platform, Text, TextInput, Touch
 import { styles } from '../styles/feed.styles';
 import Comment from './Comment';
 import Loader from './Loader';
-import { set } from 'date-fns';
 
 type CommentsModalProps = {
     postId: Id<'posts'>,
     visible: boolean,
     onClose: () => void,
-    onCommentAdded: () => void
 }
-export default function CommentsModal({ postId, visible, onClose, onCommentAdded }: CommentsModalProps) {
+export default function CommentsModal({ postId, visible, onClose }: CommentsModalProps) {
 
     const [newComment, setNewComment] = useState<string>('');
     const comments = useQuery(api.comments.getComments, { postId });
@@ -28,7 +26,6 @@ export default function CommentsModal({ postId, visible, onClose, onCommentAdded
         try {
             await addComment({ content: newComment, postId });
             setNewComment('');
-            onCommentAdded();
 
         } catch (error) {
             console.log('Error adding comment:', error);

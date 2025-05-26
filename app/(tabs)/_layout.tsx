@@ -1,9 +1,6 @@
 import { COLORS } from '@/constants';
-import { api } from '@/convex/_generated/api';
 import { Ionicons } from '@expo/vector-icons';
-import { useQuery } from 'convex/react';
 import { Tabs } from 'expo-router';
-import { useEffect, useState } from 'react';
 
 export default function TabLayout() {
     return (
